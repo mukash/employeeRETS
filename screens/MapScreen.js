@@ -3,25 +3,21 @@ import {
   StyleSheet,
   Text,
   View,
-  Alert,
   ToastAndroid,
+  Image,
   TouchableOpacity,
 } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-community/async-storage';
-import MapView, {Marker, Polyline} from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-const coords = [
-  {
-    longitude: 72.8151,
-    latitude: 33.7739,
-  },
-];
+import IsLoadingCoords from './isLoadingCoords';
 export default class GeolocationExample extends React.Component {
   state = {
     lat: '',
     lng: '',
     token: '',
+    isLoading: true,
     region: {
       latitude: 33.7463,
       longitude: 72.8397,
@@ -36,6 +32,7 @@ export default class GeolocationExample extends React.Component {
       this.setState({token: token});
       this.getData();
       this.getCoords = setInterval(this.getData, 10000);
+      this.loadingCoords();
     } catch (e) {
       console.error(error);
     }
@@ -82,48 +79,69 @@ export default class GeolocationExample extends React.Component {
         alert(error);
       });
   };
+  loadingCoords = () => {
+    setTimeout(() => {
+      this.setState({isLoading: false});
+    }, 25000);
+  };
 
+  closeJon = () => {};
   render() {
     const {navigation} = this.props;
     const Latitude = navigation.getParam('lat');
     const Longitude = navigation.getParam('lng');
+    const jobId = navigation.getParam('jobId');
+    const ClientId = navigation.getParam('ClientID');
     const latEmp = this.state.lat;
     const lngEmp = this.state.lng;
-    console.log(this.state.lat);
-    console.log(latEmp + '' + lngEmp);
+    const origin = {latitude: latEmp, longitude: lngEmp};
+    const destination = {latitude: Latitude, longitude: Longitude};
+    console.log(origin);
+    // console.log(this.state.lat);
+    // console.log(latEmp + '' + lngEmp);
     return (
-      <View accessible={true} style={styles.container}>
-        <MapView style={styles.map} region={this.state.region}>
-          {/* <Marker
-            coordinate={{
-              longitude: this.state.lng,
-              latitude: this.state.lat,
-            }}
-            title={'hala hala'}
-            description={'described'}
-          /> */}
-          <Marker
-            coordinate={{
-              longitude: parseFloat(Longitude),
-              latitude: parseFloat(Latitude),
-            }}
-            title={'hala hala'}
-            description={'described'}
-          />
-          {/* <MapViewDirections
-            origin={coords[0]}
-            destination={latlng}
-            apikey={'AIzaSyBvWG7c2--G81Nw0HzVG2dzQhA6FcYTpaU'}
-            strokeWidth={3}
-            strokeColor="hotpink"
-          /> */}
-        </MapView>
+      <View style={styles.container}>
+        {this.state.isLoading ? (
+          <IsLoadingCoords />
+        ) : (
+          <View accessible={true} style={styles.container}>
+            <MapView style={styles.map} region={this.state.region}>
+              <Marker
+                coordinate={{
+                  longitude: parseFloat(lngEmp),
+                  latitude: parseFloat(latEmp),
+                }}
+                title={'Employee'}
+                description={'Wasti'}>
+                <Image
+                  source={require('../assets/img.png')}
+                  style={{width: 45, height: 45}}
+                />
+              </Marker>
+              <Marker
+                coordinate={{
+                  longitude: parseFloat(Longitude),
+                  latitude: parseFloat(Latitude),
+                }}
+                title={'Client'}
+                description={'shaka fradia'}
+              />
+              <MapViewDirections
+                origin={origin}
+                destination={destination}
+                apikey={'AIzaSyBvWG7c2--G81Nw0HzVG2dzQhA6FcYTpaU'}
+                strokeWidth={3}
+                strokeColor="hotpink"
+              />
+            </MapView>
 
-        <TouchableOpacity
-          style={styles.buttonContainer}
-          onPress={this.stopRoutine}>
-          <Text>Stop Tracking</Text>
-        </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={this.stopRoutine}>
+              <Text>Stop Tracking</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   }
@@ -143,6 +161,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    
   },
   map: {
     position: 'absolute',

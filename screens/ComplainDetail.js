@@ -10,9 +10,14 @@ class ComplainDetail extends Component {
   goBack = () => {
     this.props.navigation.navigate('Jobs');
   };
-  startJob = (Latitide, Longitude) => {
+  startJob = (Latitide, Longitude, jobId, ClientID) => {
     //alert(Latitide + '  and  ' + Longitude);
-    this.props.navigation.navigate('Map', {lat: Latitide, lng: Longitude});
+    this.props.navigation.navigate('Map', {
+      lat: Latitide,
+      lng: Longitude,
+      jobId: jobId,
+      ClientID: ClientID,
+    });
   };
   render() {
     const {navigation} = this.props;
@@ -20,6 +25,7 @@ class ComplainDetail extends Component {
     const address = navigation.getParam('Address');
     let jobId = navigation.getParam('jobId');
     let Latitide = navigation.getParam('Latitide');
+    let ClientID = navigation.getParam('ClientId');
     let Longitude = navigation.getParam('Longitude');
     return (
       <View>
@@ -45,7 +51,7 @@ class ComplainDetail extends Component {
         <View style={styles.buttonWrapper}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.startJob(Latitide, Longitude)}>
+            onPress={() => this.startJob(Latitide, Longitude, jobId, ClientID)}>
             <Text style={styles.buttonText}>Do this job</Text>
           </TouchableOpacity>
         </View>

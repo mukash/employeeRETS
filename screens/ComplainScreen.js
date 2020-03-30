@@ -47,6 +47,7 @@ export default class App extends Component {
         <TouchableOpacity onPress={() => this.getComplainDetail(item)}>
           <Text>NAME: {item.name}</Text>
           <Text>DESCRIPTION: {item.address}</Text>
+          <Text>ID: {item.cid}</Text>
         </TouchableOpacity>
       </ListItem>
     </List>
@@ -62,6 +63,7 @@ export default class App extends Component {
       Longitude: item.longitude,
       Date: item.date,
       jobId: item.jid,
+      ClientID: item.cid,
     });
     //console.log(item.jid);
   };
