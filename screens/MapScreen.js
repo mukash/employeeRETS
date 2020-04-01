@@ -12,11 +12,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import IsLoadingCoords from './isLoadingCoords';
+import IconOnMap from './iconOnMap';
 export default class GeolocationExample extends React.Component {
   state = {
+    token: '',
     lat: '',
     lng: '',
-    token: '',
     isLoading: true,
     region: {
       latitude: 33.7463,
@@ -28,36 +29,21 @@ export default class GeolocationExample extends React.Component {
   async componentDidMount() {
     try {
       const token = await AsyncStorage.getItem('token');
-      // alert(token);
       this.setState({token: token});
-      this.getData();
-      this.getCoords = setInterval(this.getData, 10000);
       this.loadingCoords();
+      this.fetchCoords();
     } catch (e) {
       console.error(error);
     }
   }
-  stopRoutine = () => {
-    clearInterval(this.getCoords);
-    ToastAndroid.show('Tracking has been stopped.', ToastAndroid.SHORT);
-    ToastAndroid.showWithGravity(
-      'Tracking has been stopped.',
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM,
-    );
+  loadingCoords = () => {
+    setTimeout(() => {
+      this.setState({isLoading: false});
+    }, 2000);
   };
-  componentWillUnmount() {
-    this.watchID != null && Geolocation.clearWatch(this.watchID);
-  }
-  watchID = null;
-  getData = () => {
-    this.watchID = Geolocation.watchPosition(position => {
-      let lng = position.coords.longitude;
-      let lat = position.coords.latitude;
-      this.setState({lng: lng});
-      this.setState({lat: lat});
-    });
-    fetch('http://rets.codlers.com/api/employee/trackingemp.php', {
+
+  fetchCoords = () => {
+    fetch('http://rets.codlers.com/api/employee/getCoords.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -65,40 +51,58 @@ export default class GeolocationExample extends React.Component {
       },
       body: JSON.stringify({
         token: this.state.token,
-        longitude: this.state.lng,
-        latitude: this.state.lat,
       }),
     })
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson['message'] != undefined) {
-          console.log(responseJson.message);
-        }
+        console.log(responseJson);
+        this.setState({
+          lat: responseJson.latitude,
+          lng: responseJson.longitude,
+        });
+
+        console.log(this.state.lat + '' + this.state.lng);
       })
       .catch(error => {
         alert(error);
       });
   };
-  loadingCoords = () => {
-    setTimeout(() => {
-      this.setState({isLoading: false});
-    }, 25000);
+  statusChange = jobId => {
+    fetch('http://rets.codlers.com/api/employee/statusUpdate.php', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jid: jobId,
+      }),
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson['message'] != undefined) {
+          ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
+          ToastAndroid.showWithGravity(
+            responseJson.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    this.props.navigation.navigate('Jobs');
   };
-
-  closeJon = () => {};
   render() {
     const {navigation} = this.props;
     const Latitude = navigation.getParam('lat');
     const Longitude = navigation.getParam('lng');
     const jobId = navigation.getParam('jobId');
-    const ClientId = navigation.getParam('ClientID');
     const latEmp = this.state.lat;
     const lngEmp = this.state.lng;
     const origin = {latitude: latEmp, longitude: lngEmp};
     const destination = {latitude: Latitude, longitude: Longitude};
-    console.log(origin);
-    // console.log(this.state.lat);
-    // console.log(latEmp + '' + lngEmp);
     return (
       <View style={styles.container}>
         {this.state.isLoading ? (
@@ -131,14 +135,14 @@ export default class GeolocationExample extends React.Component {
                 destination={destination}
                 apikey={'AIzaSyBvWG7c2--G81Nw0HzVG2dzQhA6FcYTpaU'}
                 strokeWidth={3}
-                strokeColor="hotpink"
+                strokeColor="#02584d"
               />
             </MapView>
 
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={this.stopRoutine}>
-              <Text>Stop Tracking</Text>
+              onPress={() => this.statusChange(jobId)}>
+              <Text>Complete job</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -161,7 +165,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    
+    backgroundColor: '#fff',
   },
   map: {
     position: 'absolute',
@@ -170,6 +174,13 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     marginBottom: 150,
+  },
+  iconWrapper: {
+    marginTop: 24,
+    marginLeft: 7,
+  },
+  IconEntStyle: {
+    color: '#000',
   },
   buttonContainer: {
     marginTop: 10,

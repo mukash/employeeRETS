@@ -8,6 +8,7 @@ export default class App extends Component {
     super(props);
     this.state = {
       token: '',
+      dataSource: [],
     };
   }
   async componentDidMount() {
@@ -52,7 +53,6 @@ export default class App extends Component {
       </ListItem>
     </List>
   );
-
   getComplainDetail = item => {
     this.props.navigation.navigate('Complain', {
       Name: item.name,
@@ -65,7 +65,6 @@ export default class App extends Component {
       jobId: item.jid,
       ClientID: item.cid,
     });
-    //console.log(item.jid);
   };
   render() {
     return (

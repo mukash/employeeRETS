@@ -8,6 +8,7 @@ class LoadingScreen extends Component {
   }
 
   _loadData = async () => {
+    
     const token = await AsyncStorage.getItem('token');
     this.props.navigation.navigate(token == null ? 'stack' : 'Dashboard');
     // console.log(isLoggedIn);

@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 import IconEnt from 'react-native-vector-icons/Entypo';
 
 class ComplainDetail extends Component {
@@ -10,15 +16,39 @@ class ComplainDetail extends Component {
   goBack = () => {
     this.props.navigation.navigate('Jobs');
   };
-  startJob = (Latitide, Longitude, jobId, ClientID) => {
+  startJob = (Latitide, Longitude, jobId) => {
     //alert(Latitide + '  and  ' + Longitude);
+    fetch('http://rets.codlers.com/api/employee/statusUpdate.php', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        jid: jobId,
+      }),
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        if (responseJson['message'] != undefined) {
+          ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
+          ToastAndroid.showWithGravity(
+            responseJson.message,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+          );
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
     this.props.navigation.navigate('Map', {
       lat: Latitide,
       lng: Longitude,
       jobId: jobId,
-      ClientID: ClientID,
     });
   };
+
   render() {
     const {navigation} = this.props;
     const Name = navigation.getParam('Name');
@@ -33,9 +63,9 @@ class ComplainDetail extends Component {
           <View style={styles.iconWrapper}>
             <TouchableOpacity onPress={() => this.goBack()}>
               <IconEnt
-                name="arrow-long-left"
+                name="chevron-small-left"
                 style={styles.IconEntStyle}
-                size={25}
+                size={35}
               />
             </TouchableOpacity>
           </View>
@@ -51,7 +81,7 @@ class ComplainDetail extends Component {
         <View style={styles.buttonWrapper}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => this.startJob(Latitide, Longitude, jobId, ClientID)}>
+            onPress={() => this.startJob(Latitide, Longitude, jobId)}>
             <Text style={styles.buttonText}>Do this job</Text>
           </TouchableOpacity>
         </View>
@@ -73,8 +103,8 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   headerTextWrapper: {
-    marginHorizontal: 105,
-    marginTop: 25,
+    marginHorizontal: 100,
+    marginTop: 28,
   },
   headerText: {
     color: '#fff',
