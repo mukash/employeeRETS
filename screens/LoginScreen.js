@@ -19,6 +19,7 @@ class LoginScreen extends React.Component {
     this.state = {
       pass: '',
       email: '',
+      emid: '',
     };
   }
   static navigationOptions = {
@@ -85,8 +86,8 @@ class LoginScreen extends React.Component {
     try {
       await AsyncStorage.setItem('token', res.employee.token);
       await AsyncStorage.setItem('name', res.employee.empname);
-      // let t = await AsyncStorage.getItem('name');
-      // alert(t);
+      await AsyncStorage.setItem('emid', res.employee.emid);
+      alert;
     } catch (e) {
       console.error(error);
     }

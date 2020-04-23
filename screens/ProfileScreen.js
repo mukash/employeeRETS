@@ -8,10 +8,12 @@ import {
   ActivityIndicator,
   ToastAndroid,
   Button,
+  Alert,
 } from 'react-native';
 import IconEnt from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
+import messaging from '@react-native-firebase/messaging';
 export default class Profile extends Component {
   state = {
     name: '',
@@ -19,20 +21,87 @@ export default class Profile extends Component {
     lat: '',
     lng: '',
     isLoading: true,
+    fcmToken: '',
+    emid: '',
   };
   async componentDidMount() {
     try {
+      const emid = await AsyncStorage.getItem('emid');
+      this.setState({emid: emid});
+      console.log(this.state.emid);
+      this.getFcmToken(emid);
+      this.forGround();
+      // this.sendToken();
       const token = await AsyncStorage.getItem('token');
       const name = await AsyncStorage.getItem('name');
       this.setState({token: token});
       this.setState({name: name});
-      this.getCoords = setInterval(this.getData, 1000);
+      this.getCoords = setInterval(this.getData, 10000);
       this.loadingCoords();
       // this.getCoords = setInterval(this.getData, 1000);
     } catch (e) {
       console.error(error);
     }
   }
+  sendToken = () => {
+    fetch('http://rets.codlers.com/api/employee/fcmToken.php', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fcm: this.state.fcmToken,
+        emid: this.state.emid,
+      }),
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson.Message);
+      })
+      .catch(error => {
+        alert(error);
+      });
+  };
+  //1
+  async getFcmToken() {
+    let fcmToken = await AsyncStorage.getItem('fcm');
+    fetch('http://rets.codlers.com/api/employee/fcmToken.php', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fcm: fcmToken,
+        emid: this.state.emid,
+      }),
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        console.log(responseJson.Message);
+      })
+      .catch(error => {
+        // alert(error);
+      });
+    if (!fcmToken) {
+      fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        // user has a device token
+        await AsyncStorage.setItem('fcm', fcmToken);
+      }
+    }
+    this.setState({fcmToken: fcmToken});
+    console.log('fcm:', this.state.fcmToken);
+  }
+  forGround = () => {
+    messaging().onMessage(async remoteMessage => {
+      Alert.alert('New job', JSON.stringify(remoteMessage.notification.body));
+      console.log('Message handled in the background!', remoteMessage);
+    });
+
+    /// return unsubscribe;
+  };
   stopRoutine = () => {
     clearInterval(this.getCoords);
     ToastAndroid.show('Tracking has been stopped.', ToastAndroid.SHORT);
@@ -78,6 +147,7 @@ export default class Profile extends Component {
   };
   _logOut = async () => {
     await AsyncStorage.clear();
+    await AsyncStorage.removeItem('fcm');
     this.props.navigation.navigate('stack');
   };
   stopTracking = () => {
