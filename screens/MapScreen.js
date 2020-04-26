@@ -7,12 +7,10 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
 import AsyncStorage from '@react-native-community/async-storage';
 import MapView, {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import IsLoadingCoords from './isLoadingCoords';
-import IconOnMap from './iconOnMap';
 export default class GeolocationExample extends React.Component {
   state = {
     token: '',
@@ -92,7 +90,7 @@ export default class GeolocationExample extends React.Component {
       .catch(error => {
         console.error(error);
       });
-    this.props.navigation.navigate('Jobs');
+    //this.props.navigation.navigate('Jobs');
   };
   render() {
     const {navigation} = this.props;

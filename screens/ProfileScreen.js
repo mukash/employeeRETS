@@ -36,7 +36,7 @@ export default class Profile extends Component {
       const name = await AsyncStorage.getItem('name');
       this.setState({token: token});
       this.setState({name: name});
-      this.getCoords = setInterval(this.getData, 10000);
+      this.getCoords = setInterval(this.getData, 1000);
       this.loadingCoords();
       // this.getCoords = setInterval(this.getData, 1000);
     } catch (e) {
@@ -96,7 +96,16 @@ export default class Profile extends Component {
   }
   forGround = () => {
     messaging().onMessage(async remoteMessage => {
-      Alert.alert('New job', JSON.stringify(remoteMessage.notification.body));
+      //if(remoteMessage.data.hasOwnProperty('type')){
+
+      if (remoteMessage.data.rets == 'job') {
+        alert(remoteMessage.data.rets);
+        this.props.navigation.navigate('Profile', {
+          job_id: remoteMessage.data.job_id,
+        });
+      }
+      // }
+      //s Alert.alert('New job', JSON.stringify(remoteMessage.data));
       console.log('Message handled in the background!', remoteMessage);
     });
 
