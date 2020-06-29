@@ -17,8 +17,8 @@ const LATITUDE = 33.74083037;
 const LONGITUDE = 72.78583019;
 const {width, height} = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.1;
-const LONGITUDE_DELTA = 0.1;
+const LATITUDE_DELTA = 0.0822;
+const LONGITUDE_DELTA = 0.0321;
 export default class GeolocationExample extends React.Component {
   state = {
     token: '',
@@ -76,7 +76,7 @@ export default class GeolocationExample extends React.Component {
         enableHighAccuracy: true,
         timeout: 15000,
         maximumAge: 500,
-        fastestInterval: 500,
+        fastestInterval: 10000,
         forceRequestLocation: true,
         distanceFilter: 0,
       },
@@ -160,9 +160,19 @@ export default class GeolocationExample extends React.Component {
               </View>
             ) : (
               <View accessible={true} style={styles.container}>
-                <Animated
-                  style={styles.mapsForJob}
-                  initialRegion={this.state.region}>
+                <MapView style={styles.map} region={this.state.region}>
+                  {/* <Marker
+                    coordinate={{
+                      longitude: parseFloat(lngEmp),
+                      latitude: parseFloat(latEmp),
+                    }}
+                    title={'Employee'}
+                    description={'Wasti'}>
+                    <Image
+                      source={require('../assets/img.png')}
+                      style={{width: 45, height: 45}}
+                    />
+                  </Marker> */}
                   <MapView.Marker.Animated
                     ref={marker => {
                       this.marker = marker;
@@ -184,7 +194,7 @@ export default class GeolocationExample extends React.Component {
                     strokeWidth={3}
                     strokeColor="#02584d"
                   />
-                </Animated>
+                </MapView>
 
                 <TouchableOpacity
                   style={styles.buttonContainer}
@@ -218,15 +228,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     marginBottom: 0,
-  },
-  mapsForJob: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    marginBottom: 0,
-    height: '90%',
   },
   iconWrapper: {
     marginTop: 24,

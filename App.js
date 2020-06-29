@@ -5,7 +5,7 @@ import DashboardScreen from './screens/DashboardScreen';
 import LoginScreen from './screens/LoginScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import ComplainDetail from './screens/ComplainDetail';
-
+import CompletedJobsDetail from './screens/CompletedJobsDetail';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -29,6 +29,12 @@ const switchNav = createSwitchNavigator({
   },
   Complain: {
     screen: ComplainDetail,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  CompletedDetail: {
+    screen: CompletedJobsDetail,
     navigationOptions: {
       headerShown: false,
     },

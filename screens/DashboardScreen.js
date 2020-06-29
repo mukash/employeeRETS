@@ -22,8 +22,10 @@ import {createAppContainer} from 'react-navigation';
 import MapScreen from './MapScreen';
 import ComplainSceen from './ComplainScreen';
 import ProfileScreen from './ProfileScreen';
-import TestScreen from './TestScreen';
-import TestScreenOther from './TestScreenOther';
+import CompletedJobs from './CompletedJobs';
+import TestingWatch from './TestingWatch';
+// import TestScreen from './TestScreen';
+// import TestScreenOther from './TestScreenOther';
 const CustomDrawerComponent = props => (
   <SafeAreaView style={{flex: 1}}>
     <View
@@ -54,8 +56,9 @@ const DrawerNavigator = createDrawerNavigator(
     Profile: {screen: ProfileScreen},
     Map: {screen: MapScreen},
     Jobs: {screen: ComplainSceen},
-    Test: {screen: TestScreen},
-    Testt: {screen: TestScreenOther},
+    Completed: {screen: CompletedJobs},
+    //+6Test: {screen: TestingWatch},
+    // Testt: {screen: TestScreenOther},
   },
   {
     contentComponent: CustomDrawerComponent,

@@ -7,56 +7,20 @@ import {
   ToastAndroid,
 } from 'react-native';
 import IconEnt from 'react-native-vector-icons/Entypo';
-
-class ComplainDetail extends Component {
+class CompletedJobsDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   goBack = () => {
-    this.props.navigation.navigate('Jobs');
-  };
-  startJob = (Latitide, Longitude, jobId) => {
-    //alert(Latitide + '  and  ' + Longitude);
-    fetch('http://rets.codlers.com/api/employee/statusUpdate.php', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        jid: jobId,
-      }),
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        if (responseJson['message'] != undefined) {
-          ToastAndroid.show(responseJson.message, ToastAndroid.SHORT);
-          ToastAndroid.showWithGravity(
-            responseJson.message,
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM,
-          );
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    this.props.navigation.navigate('Map', {
-      lat: Latitide,
-      lng: Longitude,
-      jobId: jobId,
-    });
+    this.props.navigation.navigate('Completed');
   };
 
   render() {
     const {navigation} = this.props;
     const Name = navigation.getParam('Name');
     const address = navigation.getParam('Address');
-    let jobId = navigation.getParam('jobId');
-    let Latitide = navigation.getParam('Latitide');
     let status = navigation.getParam('Status');
-    let Longitude = navigation.getParam('Longitude');
     let Description = navigation.getParam('Description');
     let Date = navigation.getParam('Date');
     return (
@@ -90,18 +54,11 @@ class ComplainDetail extends Component {
           style={{
             paddingLeft: 7,
             padding: 7,
-            backgroundColor: 'red',
+            backgroundColor: 'mediumseagreen',
             fontSize: 30,
           }}>
           {status}
         </Text>
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => this.startJob(Latitide, Longitude, jobId)}>
-            <Text style={styles.buttonText}>Do this job</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
@@ -146,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ComplainDetail;
+export default CompletedJobsDetail;

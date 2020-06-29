@@ -5,15 +5,13 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
   ToastAndroid,
-  Button,
-  Alert,
 } from 'react-native';
 import IconEnt from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-community/async-storage';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import messaging from '@react-native-firebase/messaging';
+import {Right} from 'native-base';
 export default class Profile extends Component {
   state = {
     name: '',
@@ -31,18 +29,19 @@ export default class Profile extends Component {
       console.log(this.state.emid);
       this.getFcmToken(emid);
       this.forGround();
-      // this.sendToken();
       const token = await AsyncStorage.getItem('token');
       const name = await AsyncStorage.getItem('name');
       this.setState({token: token});
+      this.getProgress(token);
       this.setState({name: name});
-      this.getCoords = setInterval(this.getData, 1000);
+      //  this.getData();
+      this.getData();
       this.loadingCoords();
-      // this.getCoords = setInterval(this.getData, 1000);
     } catch (e) {
       console.error(error);
     }
   }
+  /******************************************FCM Part********************************************************/
   sendToken = () => {
     fetch('http://rets.codlers.com/api/employee/fcmToken.php', {
       method: 'POST',
@@ -96,70 +95,97 @@ export default class Profile extends Component {
   }
   forGround = () => {
     messaging().onMessage(async remoteMessage => {
-      //if(remoteMessage.data.hasOwnProperty('type')){
-
       if (remoteMessage.data.rets == 'job') {
-        alert(remoteMessage.data.rets);
+        this.props.navigation.navigate('Map', {
+          job_id: remoteMessage.data.job_id,
+        });
+      } else if (remoteMessage.data.rets == 'feedback') {
         this.props.navigation.navigate('Profile', {
           job_id: remoteMessage.data.job_id,
         });
       }
-      // }
-      //s Alert.alert('New job', JSON.stringify(remoteMessage.data));
       console.log('Message handled in the background!', remoteMessage);
     });
 
     /// return unsubscribe;
   };
-  stopRoutine = () => {
-    clearInterval(this.getCoords);
-    ToastAndroid.show('Tracking has been stopped.', ToastAndroid.SHORT);
-    ToastAndroid.showWithGravity(
-      'Tracking has been stopped.',
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM,
-    );
-  };
-  componentWillUnmount() {
-    this.watchID != null && Geolocation.clearWatch(this.watchID);
-  }
-  watchID = null;
-  getData = () => {
-    this.watchID = Geolocation.watchPosition(position => {
-      let lng = position.coords.longitude;
-      let lat = position.coords.latitude;
-      this.setState({lng: lng});
-      this.setState({lat: lat});
-      console.log(this.state.lat + '  ' + this.state.lng);
-    });
-    fetch('http://rets.codlers.com/api/employee/trackingemp.php', {
+  /******************************************FCM functions ended******************************************/
+
+  /************************************************getting rating**********************************************************************/
+  getProgress = token => {
+    fetch('http://rets.codlers.com/api/employee/calRating.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        token: this.state.token,
-        longitude: this.state.lng,
-        latitude: this.state.lat,
+        token: token,
       }),
     })
       .then(response => response.json())
       .then(responseJson => {
-        if (responseJson['message'] != undefined) {
-          console.log(responseJson.message);
-        }
+        let jobDone = responseJson[0];
+        let rating = parseFloat(responseJson[1]).toFixed(1);
+        this.setState({rating: rating});
+        this.setState({jobDone: jobDone});
       })
       .catch(error => {
-        alert(error);
+        console.error(error);
       });
   };
+  /***************************************************ending*************************************************************************************/
+  getData = () => {
+    this.watchId = Geolocation.watchPosition(
+      position => {
+        let lng = position.coords.longitude;
+        let lat = position.coords.latitude;
+        console.log('longitude: ' + lng + ' ' + 'Latitude: ' + lat);
+        //console.log(position);
+        fetch('http://rets.codlers.com/api/employee/trackingemp.php', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token: this.state.token,
+            longitude: lng,
+            latitude: lat,
+          }),
+        })
+          .then(response => response.json())
+          .then(responseJson => {
+            if (responseJson['message'] != undefined) {
+              console.log(responseJson.message);
+            }
+          })
+          .catch(error => {
+            alert(error);
+          });
+        // console.log(this.state.lat + '  ' + this.state.lng);
+      },
+      error => {
+        console.log(error.code, error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 500,
+        fastestInterval: 5000,
+        forceRequestLocation: true,
+        distanceFilter: 0,
+      },
+    );
+  };
+
   _logOut = async () => {
     await AsyncStorage.clear();
     await AsyncStorage.removeItem('fcm');
     this.props.navigation.navigate('stack');
   };
   stopTracking = () => {
+    this.watchId != null && Geolocation.clearWatch(this.watchId);
     fetch('http://rets.codlers.com/api/employee/logoutemp.php', {
       method: 'POST',
       headers: {
@@ -193,11 +219,6 @@ export default class Profile extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* {this.state.isLoading ? (
-          <View style={styles.loader}>
-            <ActivityIndicator size="large" color="#02584d" />
-          </View>
-        ) : ( */}
         <View>
           <View style={styles.header}>
             <IconEnt
@@ -212,40 +233,34 @@ export default class Profile extends Component {
             source={require('../assets/admin.jpg')}
           />
           <View style={styles.body}>
-            <View style={styles.bodyContent}>
-              <Text style={styles.name}>{this.state.name}</Text>
-              <Text style={styles.info}>
-                Info Testing testing testing testing
-              </Text>
-              <Text style={styles.description}>
-                Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum
-                electram expetendis, omittam deseruisse consequuntur ius an,
-              </Text>
-              <TouchableOpacity
-                style={styles.buttonContainer}
-                onPress={this.stopRoutine}>
-                <Text>Stop Tracking</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.buttonContainer}
-                onPress={this.stopTracking}>
-                <Text>End Shift</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={this._logOut}
-                style={styles.buttonContainer}>
-                <Text>Logout</Text>
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.name}>{this.state.name}</Text>
+
+            <Text style={styles.info}>RATING: {this.state.rating}/5</Text>
+            <Text style={styles.description}>
+              JOBS DONE: {this.state.jobDone}
+            </Text>
+
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={this.stopTracking}>
+              <Text style={{color: '#fff'}}>End Shift</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={this._logOut}
+              style={styles.buttonContainer}>
+              <Text style={{color: '#fff'}}>Logout</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        {/* )} */}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  ratingJobs: {
+    flexDirection: 'row-reverse',
+  },
   container: {
     backgroundColor: 'white',
     flex: 1,
@@ -284,6 +299,9 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 65,
+    flex: 1,
+    alignItems: 'center',
+    padding: 30,
   },
   bodyContent: {
     flex: 1,
@@ -296,7 +314,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   info: {
-    fontSize: 16,
+    fontSize: 20,
     color: '#00BFFF',
     marginTop: 10,
   },
@@ -313,7 +331,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    width: 250,
+    width: '60%',
+
     borderRadius: 30,
     backgroundColor: '#439889',
   },
