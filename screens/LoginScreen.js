@@ -11,6 +11,8 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import IconEnt from 'react-native-vector-icons/Entypo';
+
 
 class LoginScreen extends React.Component {
   constructor(props) {
@@ -99,15 +101,24 @@ class LoginScreen extends React.Component {
         <View>
           <Image
             style={{
-              width: 250,
-              height: 300,
+              width: 200,
+              height: 250,
               alignItems: 'center',
               justifyContent: 'center',
+              marginTop:'-20%'
             }}
             source={require('../assets/img.png')}
           />
         </View>
         <View>
+        <View style={styles.IconEntStyle1}>
+              < IconEnt
+                name="mail"
+                style={styles.IconEntStyle}
+                size={21}
+                
+              />
+              </View>
           <TextInput
             style={styles.inputBox}
             underlineColorAndroid="black"
@@ -118,6 +129,14 @@ class LoginScreen extends React.Component {
             onChangeText={email => this.setState({email})}
             onSubmitEditing={() => this.password.focus()}
           />
+          <View style={styles.IconEntStyle1}>
+              < IconEnt
+                name="lock"
+                style={styles.IconEntStyle}
+                size={21}
+                
+              />
+              </View>
           <TextInput
             style={styles.inputBox}
             underlineColorAndroid="black"
@@ -127,10 +146,11 @@ class LoginScreen extends React.Component {
             onChangeText={pass => this.setState({pass})}
             ref={input => (this.password = input)}
           />
-
-          <TouchableOpacity onPress={this.login} style={styles.button}>
+           <View style={styles.button}>
+          <TouchableOpacity onPress={this.login} >
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -145,25 +165,36 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: 300,
-    backgroundColor: '#fff',
+  //  backgroundColor: '#fff',
     borderRadius: 25,
-    paddingHorizontal: 16,
+    paddingHorizontal: '15%',
     fontSize: 16,
     color: 'black',
-    marginVertical: 10,
+    marginVertical: '5%',
   },
   button: {
     width: 300,
     backgroundColor: '#439889',
     borderRadius: 25,
-    marginVertical: 10,
-    paddingVertical: 13,
+    marginVertical: '6%',
+    paddingVertical: '4%',
+    marginBottom:'-15%'
   },
   buttonText: {
     fontSize: 16,
     fontWeight: '500',
     color: 'white',
     textAlign: 'center',
+  },
+  IconEntStyle:{
+    marginBottom: '-1%',
+    color: '#439889',
+    marginHorizontal: '3%',
+    marginVertical: '4%'
+  },
+  IconEntStyle1: {
+    marginBottom: '-14%'
+
   },
 });
 export default LoginScreen;

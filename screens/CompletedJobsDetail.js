@@ -31,7 +31,7 @@ class CompletedJobsDetail extends Component {
               <IconEnt
                 name="chevron-small-left"
                 style={styles.IconEntStyle}
-                size={35}
+                size={26}
               />
             </TouchableOpacity>
           </View>
@@ -39,23 +39,20 @@ class CompletedJobsDetail extends Component {
             <Text style={styles.headerText}>Job Detail</Text>
           </View>
         </View>
-        <Text style={{fontWeight: 'bold', padding: 7}}>Client Name: </Text>
-        <Text style={{paddingLeft: 7}}>{Name}</Text>
-        <Text style={{fontWeight: 'bold', padding: 7}}>Client Number:</Text>
-        <Text style={{paddingLeft: 7}}> {address}</Text>
-        <Text style={{fontWeight: 'bold', padding: 7}}>Description: </Text>
-        <Text style={{paddingLeft: 7}}>{Description}</Text>
-        <Text style={{fontWeight: 'bold', padding: 7}}>
+        <Text style={{fontWeight: 'bold', padding: '5%'}}>Client Name: </Text>
+        <Text style={{paddingLeft: '5%'}}>{Name}</Text>
+        <Text style={{fontWeight: 'bold', padding: '5%'}}>Client Number:</Text>
+        <Text style={{paddingLeft: '5%'}}> {address}</Text>
+        <Text style={{fontWeight: 'bold', padding: '5%'}}>Description: </Text>
+        <Text style={{paddingLeft: '5%'}}>{Description}</Text>
+        <Text style={{fontWeight: 'bold', padding: '5%'}}>
           Complain Registration Date:
         </Text>
-        <Text style={{paddingLeft: 7}}> {Date}</Text>
-        <Text style={{fontWeight: 'bold', padding: 7}}>Complain status: </Text>
+        <Text style={{paddingLeft: '5%'}}> {Date}</Text>
+        <Text style={{fontWeight: 'bold', padding: '5%'}}>Complain status: </Text>
         <Text
           style={{
-            paddingLeft: 7,
-            padding: 7,
-            backgroundColor: 'mediumseagreen',
-            fontSize: 30,
+            fontWeight: "bold",fontSize: 24, textAlign:"center" ,padding: '5%',color:"white", backgroundColor: 'mediumseagreen',
           }}>
           {status}
         </Text>
@@ -66,23 +63,25 @@ class CompletedJobsDetail extends Component {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#02584d',
-    height: 95,
+    //height: 95,
     flexDirection: 'row',
+    paddingBottom:'2%',
+    paddingTop:'-3%'
   },
   iconWrapper: {
-    marginTop: 26,
-    marginLeft: 7,
+    marginTop: '4%',
+    marginLeft: '2%',
   },
   IconEntStyle: {
     color: '#fff',
   },
   headerTextWrapper: {
-    marginHorizontal: 100,
-    marginTop: 28,
+    marginHorizontal:'25%',
+    marginTop: '3%',
   },
   headerText: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: 25,
   },
   buttonWrapper: {
     marginTop: 10,

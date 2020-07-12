@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from 'react-native-geolocation-service';
 import messaging from '@react-native-firebase/messaging';
 import {Right} from 'native-base';
+import Speedometer from 'react-native-speedometer-chart';
+
 export default class Profile extends Component {
   state = {
     name: '',
@@ -218,7 +220,9 @@ export default class Profile extends Component {
   };
   render() {
     return (
+     
       <View style={styles.container}>
+       
         <View>
           <View style={styles.header}>
             <IconEnt
@@ -233,6 +237,7 @@ export default class Profile extends Component {
             source={require('../assets/admin.jpg')}
           />
           <View style={styles.body}>
+          
             <Text style={styles.name}>{this.state.name}</Text>
 
             <Text style={styles.info}>RATING: {this.state.rating}/5</Text>
@@ -250,9 +255,15 @@ export default class Profile extends Component {
               style={styles.buttonContainer}>
               <Text style={{color: '#fff'}}>Logout</Text>
             </TouchableOpacity>
+      
+         
           </View>
         </View>
+        <View>
+           
+          </View>
       </View>
+      
     );
   }
 }

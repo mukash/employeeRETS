@@ -74,11 +74,7 @@ class CompletedJobs extends Component {
           </Text>
           <Text
             style={{
-              paddingLeft: 7,
-              padding: 7,
-              backgroundColor: 'mediumseagreen',
-              width: 350,
-            }}>
+              fontWeight: "bold",fontSize: 24, textAlign:"center" ,padding: '4%',color:"white", backgroundColor: "mediumseagreen" }}>
             {item.status}
           </Text>
         </TouchableOpacity>
@@ -116,7 +112,7 @@ class CompletedJobs extends Component {
             <View style={styles.iconWrapper}>
               <TouchableOpacity
                 onPress={() => this.props.navigation.openDrawer()}>
-                <IconEnt name="menu" style={styles.IconEntStyle} size={35} />
+                <IconEnt name="menu" style={styles.IconEntStyle} size={28} />
               </TouchableOpacity>
             </View>
             <View style={styles.headerTextWrapper}>
@@ -146,8 +142,9 @@ class CompletedJobs extends Component {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#02584d',
-    height: 95,
+    //height: 95,
     flexDirection: 'row',
+    paddingBottom:'2%'
   },
   message: {
     marginTop: 300,
@@ -155,19 +152,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconWrapper: {
-    marginTop: 24,
-    marginLeft: 7,
+    marginTop: '5%',
+    marginLeft: '3%',
   },
   IconEntStyle: {
     color: '#fff',
   },
   headerTextWrapper: {
-    marginHorizontal: 100,
-    marginTop: 25,
+    marginHorizontal: '20%',
+    marginTop: '4%',
   },
   headerText: {
     color: '#fff',
-    fontSize: 29,
+    fontSize: 23,
   },
 });
 

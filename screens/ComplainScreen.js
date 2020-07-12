@@ -191,7 +191,7 @@ export default class App extends Component {
             <View style={styles.iconWrapper}>
               <TouchableOpacity
                 onPress={() => this.props.navigation.openDrawer()}>
-                <IconEnt name="menu" style={styles.IconEntStyle} size={35} />
+                <IconEnt name="menu" style={styles.IconEntStyle} size={25} />
               </TouchableOpacity>
             </View>
             <View style={styles.headerTextWrapper}>
@@ -233,8 +233,9 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#02584d',
-    height: 95,
+    //height: '18%',
     flexDirection: 'row',
+    paddingBottom: '2%'
   },
   message: {
     marginTop: 300,
@@ -243,17 +244,17 @@ const styles = StyleSheet.create({
   },
   iconWrapper: {
     marginTop: '6%',
-    marginLeft: 7,
+    marginLeft: '4%',
   },
   IconEntStyle: {
     color: '#fff',
   },
   headerTextWrapper: {
-    marginHorizontal: '25%',
-    marginTop: '6%',
+    marginHorizontal: '24%',
+    marginTop: '4%',
   },
   headerText: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: 23,
   },
 });
