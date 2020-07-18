@@ -133,26 +133,28 @@ export default class App extends Component {
     </List>
   );
   renderFirstItem = item => (
-    <List containerStyle={{borderTopWidth: 0, borderBottomWidth: 0}}>
-      <ListItem selected containerStyle={{borderBottomWidth: 0}}>
-        <TouchableOpacity onPress={() => this.getComplainDetail(item)}>
+    <List style={{width: '100%'}}>
+      <ListItem style={{width: '100%'}}>
+        <TouchableOpacity
+          onPress={() => this.getComplainDetail(item)}
+          style={{width: '100%'}}>
           <Text style={{fontWeight: 'bold', padding: 7, fontSize: 17}}>
             Client Name:{' '}
           </Text>
-          <Text style={{paddingLeft: 7}}>{item.name}</Text>
+          <Text style={{padding: 7}}>{item.name}</Text>
           <Text style={{fontWeight: 'bold', padding: 7, fontSize: 17}}>
             Client Address:
           </Text>
-          <Text style={{paddingLeft: 7}}> {item.address}</Text>
+          <Text style={{padding: 7}}> {item.address}</Text>
           <Text style={{fontWeight: 'bold', padding: 7, fontSize: 17}}>
             Complain status:{' '}
           </Text>
           <Text
             style={{
-              paddingLeft: 7,
               padding: 7,
+             // padding: 7,
               backgroundColor: 'red',
-              width: '270%',
+            
               color: '#fff',
             }}>
             {item.status}
@@ -211,7 +213,7 @@ export default class App extends Component {
                 renderItem={({item}) => this.renderFirstItem(item)}
                 onRefresh={() => this.handleRefresh()}
                 refreshing={this.state.isLoading}
-                style={{height: '17%'}}
+                style={{height: '22%', width: '95%'}}
               />
               <FlatList
                 data={this.state.dataSource}
@@ -220,7 +222,7 @@ export default class App extends Component {
                 renderItem={({item}) => this.renderItem(item)}
                 onRefresh={() => this.handleRefresh()}
                 refreshing={this.state.isLoading}
-                style={{marginTop: 20}}
+                style={{ width: '95%'}}
               />
             </View>
           )}
@@ -235,7 +237,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#02584d',
     //height: '18%',
     flexDirection: 'row',
-    paddingBottom: '2%'
+    paddingBottom: '2%',
+    width: '100%',
   },
   message: {
     marginTop: 300,
@@ -243,14 +246,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconWrapper: {
-    marginTop: '6%',
+    marginTop: '4%',
     marginLeft: '4%',
   },
   IconEntStyle: {
     color: '#fff',
   },
   headerTextWrapper: {
-    marginHorizontal: '24%',
+    marginHorizontal: '25%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: '4%',
   },
   headerText: {

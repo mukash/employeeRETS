@@ -6,14 +6,16 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
+  Dimensions,
 } from 'react-native';
 import IconEnt from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from 'react-native-geolocation-service';
 import messaging from '@react-native-firebase/messaging';
-import {Right} from 'native-base';
-import Speedometer from 'react-native-speedometer-chart';
+import StarRating from 'react-native-star-rating';
 
+const WIDTH = Dimensions.get('window').width;
+const HEIGHT = Dimensions.get('window').height;
 export default class Profile extends Component {
   state = {
     name: '',
@@ -37,7 +39,7 @@ export default class Profile extends Component {
       this.getProgress(token);
       this.setState({name: name});
       //  this.getData();
-      this.getData();
+      //this.getData();
       this.loadingCoords();
     } catch (e) {
       console.error(error);
@@ -127,8 +129,9 @@ export default class Profile extends Component {
     })
       .then(response => response.json())
       .then(responseJson => {
-        let jobDone = responseJson[0];
-        let rating = parseFloat(responseJson[1]).toFixed(1);
+        let jobDone = responseJson['count'];
+        let rating = parseFloat(responseJson['average']).toFixed(1);
+
         this.setState({rating: rating});
         this.setState({jobDone: jobDone});
       })
@@ -220,9 +223,7 @@ export default class Profile extends Component {
   };
   render() {
     return (
-     
       <View style={styles.container}>
-       
         <View>
           <View style={styles.header}>
             <IconEnt
@@ -237,33 +238,60 @@ export default class Profile extends Component {
             source={require('../assets/admin.jpg')}
           />
           <View style={styles.body}>
-          
-            <Text style={styles.name}>{this.state.name}</Text>
+            <View>
+              <View style={styles.nameWrapper}>
+                <Text style={styles.name}>{this.state.name}</Text>
+              </View>
+              <View style={{flexDirection: 'column', marginLeft: 10}}>
+                <Text style={{fontSize: 15}}>Rating and reviews:</Text>
+                <Text style={{fontSize: 75}}>{this.state.rating}</Text>
+                <View style={{width: '40%'}}>
+                  <StarRating
+                    disabled={false}
+                    maxStars={5}
+                    rating={this.state.rating}
+                    //selectedStar={rating => this.onStarRatingPress(rating)}
+                    fullStarColor="#439889"
+                    emptyStarColor="#439889"
+                    starSize={25}
+                  />
+                  <Text>By {this.state.jobDone} Customers.</Text>
+                </View>
+                <View style={{width: '100%', marginTop: 35}}>
+                  <Text style={{fontSize: 30}}>
+                    {this.state.jobDone} JOBS DONE
+                  </Text>
+                  <Text>You have completed {this.state.jobDone} Jobs.</Text>
+                </View>
+              </View>
+            </View>
 
-            <Text style={styles.info}>RATING: {this.state.rating}/5</Text>
-            <Text style={styles.description}>
-              JOBS DONE: {this.state.jobDone}
-            </Text>
-
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.stopTracking}>
-              <Text style={{color: '#fff'}}>End Shift</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={this._logOut}
-              style={styles.buttonContainer}>
-              <Text style={{color: '#fff'}}>Logout</Text>
-            </TouchableOpacity>
-      
-         
+            <View
+              style={{
+                flexDirection: 'column',
+                marginTop: 20,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <View style={styles.shiftWrapper}>
+                <TouchableOpacity
+                  onPress={this.stopTracking}
+                  style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{color: '#fff'}}>End Shift</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.logoutWrapper}>
+                <TouchableOpacity
+                  onPress={this._logOut}
+                  style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{color: '#fff'}}>Logout</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
-        <View>
-           
-          </View>
+        <View />
       </View>
-      
     );
   }
 }
@@ -275,16 +303,15 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
+    width: '100%',
   },
-  loader: {
-    flex: 1,
-    justifyContent: 'center',
+  nameWrapper: {
+    alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
   },
   header: {
     backgroundColor: '#02584d',
-    height: 140,
+    height: '16%',
     justifyContent: 'center',
   },
   IconEntStyle: {
@@ -293,58 +320,64 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   avatar: {
-    width: 130,
-    height: 130,
+    width: '30%',
+    height: '15%',
     borderRadius: 63,
     borderWidth: 4,
     borderColor: 'white',
-    marginBottom: 10,
+    // marginBottom: 10,
     alignSelf: 'center',
     position: 'absolute',
-    marginTop: 100,
+    marginTop: '9%',
   },
   name: {
     fontSize: 22,
-    color: '#FFFFFF',
+    color: '#000000',
     fontWeight: '600',
+    marginTop: 0,
   },
   body: {
     marginTop: 65,
-    flex: 1,
-    alignItems: 'center',
-    padding: 30,
+    //flex: 1,
+    //  alignItems: 'center',
+    padding: 3,
+    width: '100%',
   },
   bodyContent: {
     flex: 1,
-    alignItems: 'center',
+    // alignItems: 'center',
     padding: 30,
   },
-  name: {
-    fontSize: 28,
-    color: '#696969',
-    fontWeight: '600',
-  },
   info: {
-    fontSize: 20,
-    color: '#00BFFF',
-    marginTop: 10,
+    fontSize: 16,
+    color: '#FFF',
+    //marginTop: 10,
   },
   description: {
     fontSize: 16,
-    color: '#696969',
-    marginTop: 10,
-    textAlign: 'center',
+    color: '#fff',
+    // marginTop: 10,
+    // textAlign: 'center',
   },
-  buttonContainer: {
-    marginTop: 10,
-    height: 45,
-    flexDirection: 'row',
+  shiftWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
-    width: '60%',
-
-    borderRadius: 30,
+    color: '#fff',
     backgroundColor: '#439889',
+    width: '50%',
+    height: 45,
+    borderRadius: 63,
+    alignSelf: 'center',
+  },
+  logoutWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#fff',
+    backgroundColor: '#439889',
+    width: '40%',
+    height: 45,
+    borderRadius: 63,
+    marginTop: '18%',
+    alignSelf: 'center',
   },
 });

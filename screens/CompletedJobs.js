@@ -74,7 +74,13 @@ class CompletedJobs extends Component {
           </Text>
           <Text
             style={{
-              fontWeight: "bold",fontSize: 24, textAlign:"center" ,padding: '4%',color:"white", backgroundColor: "mediumseagreen" }}>
+              fontWeight: 'bold',
+              fontSize: 24,
+              textAlign: 'center',
+              padding: '4%',
+              color: 'white',
+              backgroundColor: 'mediumseagreen',
+            }}>
             {item.status}
           </Text>
         </TouchableOpacity>
@@ -131,6 +137,7 @@ class CompletedJobs extends Component {
               renderItem={({item}) => this.renderItem(item)}
               onRefresh={() => this.handleRefresh()}
               refreshing={this.state.isLoading}
+              style={{width: '95%'}}
             />
           )}
         </View>
@@ -142,9 +149,10 @@ class CompletedJobs extends Component {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#02584d',
-    //height: 95,
+    //height: '18%',
     flexDirection: 'row',
-    paddingBottom:'2%'
+    paddingBottom: '2%',
+    width: '100%',
   },
   message: {
     marginTop: 300,
@@ -152,14 +160,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconWrapper: {
-    marginTop: '5%',
-    marginLeft: '3%',
+    marginTop: '4%',
+    marginLeft: '4%',
   },
   IconEntStyle: {
     color: '#fff',
   },
   headerTextWrapper: {
-    marginHorizontal: '20%',
+    marginHorizontal: '25%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: '4%',
   },
   headerText: {

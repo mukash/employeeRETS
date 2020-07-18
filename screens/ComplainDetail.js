@@ -85,10 +85,18 @@ class ComplainDetail extends Component {
           Complain Registration Date:
         </Text>
         <Text style={{paddingLeft: '5%'}}> {Date}</Text>
-        <Text style={{fontWeight: 'bold', padding: '5%'}}>Complain status: </Text>
+        <Text style={{fontWeight: 'bold', padding: '5%'}}>
+          Complain status:{' '}
+        </Text>
         <Text
           style={{
-            fontWeight: "bold",fontSize: 24, textAlign:"center" ,padding: '5%',color:"white", backgroundColor: "red" }}>
+            fontWeight: 'bold',
+            fontSize: 24,
+            textAlign: 'center',
+            padding: '5%',
+            color: 'white',
+            backgroundColor: 'red',
+          }}>
           {status}
         </Text>
         <View style={styles.buttonWrapper}>
@@ -105,11 +113,10 @@ class ComplainDetail extends Component {
 const styles = StyleSheet.create({
   header: {
     backgroundColor: '#02584d',
-    //height: 95,
+    //height: '18%',
     flexDirection: 'row',
-    paddingBottom:'2%',
-    paddingTop:'-2%'
-
+    paddingBottom: '2%',
+    width: '100%',
   },
   iconWrapper: {
     marginTop: '5%',
@@ -120,29 +127,35 @@ const styles = StyleSheet.create({
   },
   headerTextWrapper: {
     marginHorizontal: '25%',
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: '4%',
   },
   headerText: {
     color: '#fff',
-    fontSize: 25,
+    fontSize: 23,
   },
   buttonWrapper: {
-    marginTop: '5%',
-    marginHorizontal: '28%',
+    marginTop: '3%',
+    marginHorizontal: '25%',
+    width: '100%',
+    
   },
   button: {
-    width: 200,
+    width: '50%',
     backgroundColor: '#439889',
     borderRadius: 25,
-    marginVertical: '20%',
-    paddingVertical: '8%',
+    height: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginVertical: '20%',
+    //paddingVertical: '8%',
   },
   buttonText: {
     fontSize: 16,
     fontWeight: '500',
     color: 'white',
     textAlign: 'center',
-    
   },
 });
 
