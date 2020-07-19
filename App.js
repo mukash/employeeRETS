@@ -6,6 +6,8 @@ import LoginScreen from './screens/LoginScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import ComplainDetail from './screens/ComplainDetail';
 import CompletedJobsDetail from './screens/CompletedJobsDetail';
+import LogoScreen from './screens/LogoScreen';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -21,6 +23,8 @@ const AppNavigator = createStackNavigator({
 });
 
 const switchNav = createSwitchNavigator({
+  Logo: {screen: LogoScreen ,  navigationOptions: { headerShown: false, }},
+
   Loading: {screen: LoadingScreen},
   stack: AppNavigator,
   Dashboard: {
