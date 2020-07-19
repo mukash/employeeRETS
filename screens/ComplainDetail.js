@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   iconWrapper: {
-    marginTop: '5%',
+    marginTop: '4%',
     marginLeft: '1%',
   },
   IconEntStyle: {
