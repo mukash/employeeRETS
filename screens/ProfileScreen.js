@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from 'react-native-geolocation-service';
 import messaging from '@react-native-firebase/messaging';
 import StarRating from 'react-native-star-rating';
-
+console.disableYellowBox = true;
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 export default class Profile extends Component {
@@ -235,7 +235,7 @@ export default class Profile extends Component {
           </View>
           <Image
             style={styles.avatar}
-            source={require('../assets/admin.jpg')}
+            source={require('../assets/employee.png')}
           />
           <View style={styles.body}>
             <View>

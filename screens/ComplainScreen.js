@@ -133,7 +133,7 @@ export default class App extends Component {
     </List>
   );
   renderFirstItem = item => (
-    <List style={{width: '100%'}}>
+    <List style={{width: '100%',}}>
       <ListItem style={{width: '100%'}}>
         <TouchableOpacity
           onPress={() => this.getComplainDetail(item)}
@@ -213,7 +213,7 @@ export default class App extends Component {
                 renderItem={({item}) => this.renderFirstItem(item)}
                 onRefresh={() => this.handleRefresh()}
                 refreshing={this.state.isLoading}
-                style={{height: '22%', width: '95%'}}
+                style={{height: '35%', width: '95%'}}
               />
               <FlatList
                 data={this.state.dataSource}
