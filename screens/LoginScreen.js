@@ -51,7 +51,7 @@ class LoginScreen extends React.Component {
     }
   }
   login = () => {
-    fetch('http://rets.codlers.com/api/employee/loginemp.php', {
+    fetch('https://jhnerd.com/rets/api/employee/loginemp.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

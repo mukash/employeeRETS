@@ -47,7 +47,7 @@ export default class Profile extends Component {
   }
   /******************************************FCM Part********************************************************/
   sendToken = () => {
-    fetch('http://rets.codlers.com/api/employee/fcmToken.php', {
+    fetch('https://jhnerd.com/rets/api/employee/fcmToken.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -69,7 +69,7 @@ export default class Profile extends Component {
   //1
   async getFcmToken() {
     let fcmToken = await AsyncStorage.getItem('fcm');
-    fetch('http://rets.codlers.com/api/employee/fcmToken.php', {
+    fetch('https://jhnerd.com/rets/api/employee/fcmToken.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -117,7 +117,7 @@ export default class Profile extends Component {
 
   /************************************************getting rating**********************************************************************/
   getProgress = token => {
-    fetch('http://rets.codlers.com/api/employee/calRating.php', {
+    fetch('https://jhnerd.com/rets/api/employee/calRating.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -147,7 +147,7 @@ export default class Profile extends Component {
         let lat = position.coords.latitude;
         console.log('longitude: ' + lng + ' ' + 'Latitude: ' + lat);
         //console.log(position);
-        fetch('http://rets.codlers.com/api/employee/trackingemp.php', {
+        fetch('https://jhnerd.com/rets/api/employee/trackingemp.php', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -191,7 +191,7 @@ export default class Profile extends Component {
   };
   stopTracking = () => {
     this.watchId != null && Geolocation.clearWatch(this.watchId);
-    fetch('http://rets.codlers.com/api/employee/logoutemp.php', {
+    fetch('https://jhnerd.com/rets/api/employee/logoutemp.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

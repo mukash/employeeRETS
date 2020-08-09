@@ -105,7 +105,7 @@ export default class GeolocationExample extends React.Component {
   }
   statusChange = jobId => {
     clearInterval(this.getCoords);
-    fetch('http://rets.codlers.com/api/employee/statusUpdate.php', {
+    fetch('https://jhnerd.com/rets/api/employee/statusUpdate.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

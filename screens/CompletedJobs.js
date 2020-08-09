@@ -32,7 +32,7 @@ class CompletedJobs extends Component {
     }
   }
   getComplains = () => {
-    fetch('http://rets.codlers.com/api/employee/jobviewcom.php', {
+    fetch('https://jhnerd.com/rets/api/employee/jobviewcom.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
