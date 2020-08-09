@@ -39,7 +39,7 @@ export default class Profile extends Component {
       this.getProgress(token);
       this.setState({name: name});
       //  this.getData();
-      //this.getData();
+      this.getData();
       this.loadingCoords();
     } catch (e) {
       console.error(error);
