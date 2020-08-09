@@ -18,7 +18,7 @@ class ComplainDetail extends Component {
   };
   startJob = (Latitide, Longitude, jobId) => {
     //alert(Latitide + '  and  ' + Longitude);
-    fetch('http://rets.codlers.com/api/employee/statusUpdate.php', {
+    fetch('https://jhnerd.com/rets/api/employee/statusUpdate.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

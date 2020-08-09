@@ -33,7 +33,7 @@ export default class App extends Component {
     }
   }
   getFirstComplain = () => {
-    fetch('http://rets.codlers.com/api/employee/firstjob.php', {
+    fetch('https://jhnerd.com/rets/api/employee/firstjob.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -65,7 +65,7 @@ export default class App extends Component {
       });
   };
   getComplains = () => {
-    fetch('http://rets.codlers.com/api/employee/jobviewemp.php', {
+    fetch('https://jhnerd.com/rets/api/employee/jobviewemp.php', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
